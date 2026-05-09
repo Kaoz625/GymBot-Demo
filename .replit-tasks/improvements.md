@@ -1,40 +1,36 @@
 # Replit Agent Task: GymBot-Demo
 
 ## Goal
-Transform GymBot-Demo into a full-featured gym assistant web app with AI-powered workout plan generation, progress tracking, and a conversational AI coach powered by OpenAI.
+Transform the current single-page HTML stub into a full-featured AI gym assistant web app with real OpenAI gpt-4o integration, workout plan generation, progress tracking, and meal planning — all in one responsive interface.
 
 ## Tasks
-1. Build a clean landing page with hero: "Your AI Gym Coach" — bold, dark athletic aesthetic, neon green or electric blue accents
-2. Create an onboarding flow: collect user's fitness goal (lose weight / build muscle / endurance), current fitness level (beginner/intermediate/advanced), available equipment, and days per week available
-3. Build an AI Workout Plan generator: on form submit, call OpenAI GPT-4o with the user's profile to generate a structured weekly workout plan — display in a card-based weekly schedule UI
-4. Implement a Workout Tracker: users can log sets, reps, and weight for each exercise — store in Supabase `workout_logs` table
-5. Build a Progress Dashboard: weekly volume chart (Chart.js or Recharts), personal records table, streak counter
-6. Add an AI Coach chat widget (OpenAI GPT-4o): floating button, conversational interface — coach has context of the user's workout plan and recent logs
-7. Implement Supabase auth (email magic link or Google OAuth) so data persists per user
-8. Create a Exercise Library page: searchable list of exercises with muscle groups, instructions, and difficulty rating — seed with 30+ exercises
-9. Add push notification / reminder system (browser Notifications API) — remind users of their next scheduled workout
-10. Mobile-first design — the app must be fully usable on a phone
-11. Set up Supabase schema: `users`, `workout_plans`, `exercises`, `workout_logs`, `personal_records` tables with RLS
-12. Deploy to Cloudflare Pages (frontend) + Coolify (if Express/Node backend needed for OpenAI calls)
+1. Replace the bare-bones index.html with a polished React (Vite + TypeScript) or vanilla JS app with tabbed navigation: Chat, Workout Plans, Progress, Meal Planner
+2. Wire up OpenAI gpt-4o via a backend proxy (Node/Express or Cloudflare Worker) — never expose the API key client-side; read OPENAI_API_KEY from env
+3. Build the AI Chat tab: streaming responses, system prompt that makes the bot a certified personal trainer, suggested quick-start prompts ("Build me a 4-week beginner plan", "What should I eat before a morning workout?")
+4. Build the Workout Plans tab: form inputs (goal: strength/cardio/weight-loss, days/week, equipment available), calls AI to generate a structured weekly plan, renders it as a printable card grid
+5. Build the Progress tab: local-storage-backed log where users record reps/sets/weight per exercise; line chart (use Chart.js CDN) showing volume over time per muscle group
+6. Build the Meal Planner tab: inputs for calories/day, dietary restrictions, macro goals; AI returns a 7-day meal plan with macro breakdown per meal
+7. Dark gym aesthetic: black/charcoal background, electric orange (#FF6B00) accent, Inter font, mobile-first responsive layout
+8. Add a loading skeleton and error toast system so failed API calls degrade gracefully
+9. Deploy target: Cloudflare Pages (static frontend) + Cloudflare Worker (API proxy) — include a `wrangler.toml` and deploy instructions in README
 
 ## Tech Stack
-- React 18 + TypeScript
-- Vite
-- Tailwind CSS
-- OpenAI GPT-4o API (workout generation + AI coach)
-- Supabase (auth + database)
-- Recharts or Chart.js (progress charts)
-- Cloudflare Pages (frontend) + Coolify (backend API)
+- React 18 + TypeScript + Vite (frontend)
+- Cloudflare Worker (API proxy, OPENAI_API_KEY secret)
+- OpenAI gpt-4o with streaming (chat) and single-shot (plans/meals)
+- Chart.js for progress charts
+- LocalStorage for progress persistence
+- Tailwind CSS or plain CSS modules
 
 ## Deploy Target
-Cloudflare Pages for the frontend. If an Express proxy for OpenAI is needed, deploy it on Coolify. Never Vercel.
+Cloudflare Pages (static frontend) + Cloudflare Worker (backend proxy). Never Vercel.
 
 ## Done When
-- [ ] Onboarding flow collects user profile and generates a workout plan via OpenAI
-- [ ] Workout plan displays in weekly card schedule UI
-- [ ] Users can log sets/reps/weight — data saves to Supabase
-- [ ] Progress dashboard shows a chart with real logged data
-- [ ] AI Coach chat widget is functional (sends/receives messages from OpenAI)
-- [ ] Supabase auth works (user can sign up, log in, see their own data)
-- [ ] App is fully mobile-responsive
-- [ ] All changes pushed to `Kaoz625/GymBot-Demo` main branch
+- [ ] App loads with 4 working tabs (Chat, Workout Plans, Progress, Meal Planner)
+- [ ] AI Chat streams real gpt-4o responses via the Cloudflare Worker proxy
+- [ ] Workout plan generator returns a structured weekly plan from form inputs
+- [ ] Progress tab logs and charts at least one exercise over multiple sessions
+- [ ] Meal planner returns a 7-day plan with macros
+- [ ] No API key is exposed in client-side code
+- [ ] App is fully responsive on mobile (375px) and desktop
+- [ ] `wrangler.toml` present and README documents deploy steps
